@@ -4,36 +4,26 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import ly.img.cesdk.matrix.ui.theme.CESDKMatrixTheme
+import ly.img.editor.DesignEditor
+import ly.img.editor.EngineConfiguration
+import ly.img.editor.core.UnstableEditorApi
+import ly.img.editor.rememberForDesign
 
 class MainActivity : ComponentActivity() {
+    @OptIn(UnstableEditorApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             CESDKMatrixTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                val engineConfiguration = EngineConfiguration.rememberForDesign()
+                DesignEditor(
+                    engineConfiguration = engineConfiguration
+                ) {
+                    finish()
                 }
             }
         }
     }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
 }
