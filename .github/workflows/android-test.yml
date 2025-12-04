@@ -9,6 +9,22 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        compose-bom-version:
+          - "2025.01.00"
+          - "2025.02.00"
+          - "2025.03.00"
+          - "2025.04.00"
+          - "2025.05.00"
+          - "2025.06.00"
+          - "2025.07.00"
+          - "2025.08.00"
+          - "2025.09.00"
+          - "2025.10.00"
+          - "2025.11.00"
+          - "2025.12.00"
 
     steps:
     - name: Checkout code
@@ -30,18 +46,18 @@ jobs:
         sudo udevadm control --reload-rules
         sudo udevadm trigger --name-match=kvm
 
-    - name: Run instrumented tests
+    - name: Run instrumented tests with Compose BOM ${{ matrix.compose-bom-version }}
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 34
         target: google_apis
         arch: x86_64
         profile: pixel_6
-        script: ./gradlew connectedCheck
+        script: ./gradlew connectedCheck -PcomposeBomVersion=${{ matrix.compose-bom-version }}
 
     - name: Upload test reports
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: test-reports
+        name: test-reports-bom-${{ matrix.compose-bom-version }}
         path: app/build/reports/androidTests/
