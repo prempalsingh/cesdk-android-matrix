@@ -16,6 +16,13 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            name = "IMG.LY Artifactory"
+            url = uri("https://artifactory.img.ly/artifactory/maven")
+            mavenContent {
+                includeGroup("ly.img")
+            }
+        }
     }
 }
 
