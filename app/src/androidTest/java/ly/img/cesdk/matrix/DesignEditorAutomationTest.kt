@@ -1,0 +1,32 @@
+package ly.img.cesdk.matrix
+
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+
+@RunWith(AndroidJUnit4::class)
+class DesignEditorAutomationTest {
+
+    @get:Rule
+    val composeTestRule = createAndroidComposeRule<MainActivity>()
+
+    @OptIn(ExperimentalTestApi::class)
+    @Test
+    fun openAppAndClickFirstDockElement() {
+        // Wait for the main loading indicator to disappear
+        composeTestRule.waitUntilDoesNotExist(
+            hasTestTag("MainLoading"),
+            timeoutMillis = 30000
+        )
+
+        // Editor is now loaded, find and click the first dock element
+        composeTestRule.onNodeWithText("Elements", useUnmergedTree = true)
+            .performClick()
+    }
+}
